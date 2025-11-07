@@ -56,8 +56,6 @@ jobs:
       - name: Pack
         run: dotnet pack src/ParallelLanes/ParallelLanes.csproj --configuration Release --no-build --output ./artifacts
       - name: Publish to NuGet.org
-        uses: NuGet/actions@v1
-        with:
-          command: push
-          packages: artifacts/*.nupkg
-          source: https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "artifacts/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
